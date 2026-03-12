@@ -14,6 +14,7 @@ import { createClassStyles } from "../../../utils";
 import type { ClassNames, Styles } from "../../../utils/types";
 import { Popover } from "../../popover";
 import { SpinRing } from "../../spin";
+import { VisuallyHidden } from "../../visually-hidden";
 
 export interface ComboboxOption {
   label: JSX.Element;
@@ -82,6 +83,13 @@ export function Combobox<T extends ComboboxOption>(props: ComboboxProps<T>) {
               data-size={props.size ?? "medium"}
               style={combineStyle({}, styles().trigger)}
             >
+              <VisuallyHidden>
+                <input
+                  name={props.name}
+                  type="hidden"
+                  value={String(value() ?? "")}
+                />
+              </VisuallyHidden>
               <div class="tiny-combobox__label">
                 {label() || props.placeholder}
               </div>
