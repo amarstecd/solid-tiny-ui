@@ -7,6 +7,8 @@ export default function ComboBoxPage() {
   const [params, setParams] = createStore({
     size: "medium" as const,
     disabled: false,
+    loading: false,
+    custom: false,
   });
 
   return (
@@ -19,8 +21,16 @@ export default function ComboBoxPage() {
     >
       <Combobox
         disabled={params.disabled}
+        loading={params.loading}
         options={list(20).map((v) => ({
-          label: `Option ${v + 1}`,
+          label: params.custom ? (
+            <div class="inline">
+              {`Option ${v + 1}`}
+              <div class="i-ri:check-line c-success-base ml-1 inline-block" />
+            </div>
+          ) : (
+            `Option ${v + 1}`
+          ),
           value: v + 1,
           disabled: (v + 1) % 4 === 0,
         }))}

@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/complexity/noBannedTypes: I need Function */
 import css from "sass:./combobox.scss";
-import { createMemo, createSignal, For } from "solid-js";
+import { createMemo, createSignal, For, type JSX, Show } from "solid-js";
 import {
   combineClass,
   combineStyle,
@@ -13,16 +13,18 @@ import { Listbox } from "../../../primitives/listbox";
 import { createClassStyles } from "../../../utils";
 import type { ClassNames, Styles } from "../../../utils/types";
 import { Popover } from "../../popover";
+import { SpinRing } from "../../spin";
 
-export interface ComboboxProps<
-  T extends {
-    label: string;
-    value: unknown;
-    disabled?: boolean;
-  },
-> {
+export interface ComboboxOption {
+  label: JSX.Element;
+  value: unknown;
+  disabled?: boolean;
+}
+
+export interface ComboboxProps<T extends ComboboxOption> {
   value?: T["value"];
   onChange?: (value: T["value"]) => void;
+  loading?: boolean;
   options: T[];
   classNames?: ClassNames<
     "trigger" | "popoverContent" | "options" | "option" | "suffix",
@@ -39,13 +41,7 @@ export interface ComboboxProps<
   name?: string;
 }
 
-export function Combobox<
-  T extends {
-    label: string;
-    value: unknown;
-    disabled?: boolean;
-  },
->(props: ComboboxProps<T>) {
+export function Combobox<T extends ComboboxOption>(props: ComboboxProps<T>) {
   mountStyle(css, "tiny-combobox");
 
   const [value, setValue] = createSignal<T["value"] | undefined>(props.value);
@@ -70,35 +66,32 @@ export function Combobox<
   );
 
   return (
-    <Popover placement="bottom" trigger="click">
+    <Popover
+      disabled={props.disabled || props.loading}
+      placement="bottom"
+      trigger="click"
+    >
       {(state, acts) => (
         <>
           <Popover.Trigger>
             <div
               class={combineClass("tiny-combobox__trigger", classes().trigger)}
               data-disabled={dataIf(props.disabled ?? false)}
+              data-loading={dataIf(props.loading ?? false)}
               data-open={dataIf(state.open)}
               data-size={props.size ?? "medium"}
               style={combineStyle({}, styles().trigger)}
             >
-              <input
-                aria-expanded={state.open}
-                autocomplete="off"
-                id={props.id}
-                name={props.name}
-                placeholder={props.placeholder}
-                readonly
-                role="combobox"
-                style={{ height: "100%", width: "100%" }}
-                tabIndex={-1}
-                type="search"
-                value={label()}
-              />
+              <div class="tiny-combobox__label">
+                {label() || props.placeholder}
+              </div>
               <div
                 class="tiny-combobox__suffix"
                 style={combineStyle({}, styles().suffix)}
               >
-                <ArrowDownSLine />
+                <Show fallback={<ArrowDownSLine />} when={props.loading}>
+                  <SpinRing color="inherit" size={16} />
+                </Show>
               </div>
             </div>
           </Popover.Trigger>

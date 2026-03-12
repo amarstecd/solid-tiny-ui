@@ -17,7 +17,7 @@ export default defineConfig({
     modules: false,
   },
   server: {
-    port: 5022,
+    port: 5042,
   },
   define: {
     IS_DEV: "true",
