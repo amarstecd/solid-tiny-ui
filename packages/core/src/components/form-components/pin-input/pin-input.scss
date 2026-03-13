@@ -1,0 +1,66 @@
+.tiny-pin-input-wrapper {
+    display: inline-flex;
+    gap: var(--tiny-space-sm);
+
+    &[data-disabled] {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    &[data-invalid] {
+        .tiny-pin-input-cell {
+            --c-border: rgb(var(--tiny-rgb-danger-base));
+        }
+    }
+
+    &[data-size="small"] {
+        .tiny-pin-input-cell {
+            width: 24px;
+            height: 24px;
+            font-size: var(--tiny-fs-sm);
+        }
+    }
+
+    &[data-size="medium"] {
+        .tiny-pin-input-cell {
+            width: 32px;
+            height: 32px;
+            font-size: var(--tiny-fs-md);
+        }
+    }
+
+    &[data-size="large"] {
+        .tiny-pin-input-cell {
+            width: 40px;
+            height: 40px;
+            font-size: var(--tiny-fs-lg);
+        }
+    }
+}
+
+.tiny-pin-input-cell {
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: var(--tiny-radius-sm);
+    border-color: var(--c-border);
+    transition: border-color 150ms;
+    outline: none;
+    padding: 0;
+
+    --c-border: rgb(var(--tiny-rgb-neutral-3));
+
+    &:focus {
+        --c-border: rgb(var(--tiny-rgb-brand-3));
+        outline: 2px solid var(--c-border);
+        outline-offset: -1px;
+    }
+
+    &:disabled {
+        background-color: rgb(var(--tiny-rgb-neutral-1));
+    }
+
+    &::placeholder {
+        color: rgb(var(--tiny-rgb-neutral-4));
+    }
+}

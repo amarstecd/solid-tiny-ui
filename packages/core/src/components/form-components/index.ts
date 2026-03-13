@@ -3,6 +3,7 @@ export * from "./checkbox-group";
 export * from "./combobox";
 export * from "./number-input";
 export * from "./password-input";
+export * from "./pin-input";
 export * from "./radio-group";
 export * from "./switcher";
 export * from "./text-field";
